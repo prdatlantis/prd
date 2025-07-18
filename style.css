@@ -1,0 +1,185 @@
+:root {
+  --text-color: #ffffff;
+  --bg-color: rgba(0, 0, 0, 0.7);
+  --btn-color: #4caf50;
+  --btn-hover: #45a049;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color);
+  background-image: url('brick.png');
+  background-size: 64px;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  transition: background-color 0.5s, color 0.5s;
+}
+
+.dark-mode {
+  --text-color: #e0e0e0;
+  --bg-color: rgba(30, 30, 30, 0.8);
+  --btn-color: #1e88e5;
+  --btn-hover: #1565c0;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-color);
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  margin: 1rem;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.logo-img {
+  height: 70px;
+}
+
+.title-text {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--text-color);
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+}
+
+.nav-links a, .theme-toggle {
+  text-decoration: none;
+  color: var(--text-color);
+  padding: 0.5rem 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: background-color 0.3s;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.nav-links a:hover, .theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.section {
+  padding: 2rem;
+  text-align: center;
+  background-color: var(--bg-color);
+  margin: 2rem;
+  border-radius: 12px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.btn {
+  background-color: var(--btn-color);
+  color: white;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s;
+  display: inline-block;
+  margin-top: 1rem;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: var(--btn-hover);
+  transform: scale(1.05);
+}
+
+.discord-btn {
+  background-color: #5865F2;
+}
+
+.discord-btn:hover {
+  background-color: #4752C4;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+  background-color: var(--bg-color);
+  border-radius: 12px;
+  margin: 0 1rem 1rem 1rem;
+}
+
+.server-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.server-icon {
+  height: 64px;
+}
+
+.copy-btn {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.copy-btn:hover {
+  background-color: #27ae60;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slogan {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+}
+
+.goal-section {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--text-color);
+  text-align: left;
+}
+
+.goal-section h2 {
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.goal-section ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}

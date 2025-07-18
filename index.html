@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PRD - Home</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H5W55KST4J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-H5W55KST4J');
+</script>
+<body class="dark-mode">
+  <nav class="navbar">
+    <a href="index.html" class="logo-title">
+      <img src="logo.png" alt="Logo Coral" class="logo-img" />
+      <div class="title-text">
+        PRD<br />
+        <small>Partito Riformista Democratico</small>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="chi-siamo.html">Chi siamo</a></li>
+      <li><a href="membri.html">Membri</a></li>
+      <li><a href="contattaci.html">Contattaci</a></li>
+      <li><a href="regolamento.html">Regolamento</a></li>
+      <li><button id="theme-toggle" class="theme-toggle">Toggle Tema</button></li>
+    </ul>
+  </nav>
+
+  <section id="server-info" class="server-banner">
+    <img src="Coral.png" alt="Logo Coral" class="server-icon" />
+    <div>
+      <strong>Server Minecraft Java Edition:</strong> <span id="server-ip">play.coralmc.it</span>
+      <button class="copy-btn" onclick="copyIP()">Copia IP</button>
+    </div>
+  </section>
+
+  <section id="home" class="section">
+    <h1>Benvenuti nel PRD</h1>
+    <p class="slogan">
+      Tutti insieme per la comunità
+    </p>
+
+    <div class="goal-section">
+      <h2>Il nostro obiettivo finale</h2>
+      <ul>
+        <li>Diminuire la corruzione</li>
+        <li>garantire che la giustizia sia uguale per tutti</li>
+        <li>Ridurre la criminalità nel server</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Partito Riformista Democratico - Tutti i diritti riservati
+  </footer>
+</body>
+</html>
