@@ -3,17 +3,124 @@
 <head>
   <meta charset="UTF-8" />
   <title>PRD - Membri</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    :root {
+      --text-color: #333333;
+      --btn-color: #007BFF;
+      --background-light: #f9f9f9;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      color: var(--text-color);
+    }
+
+    .navbar {
+      background-color: var(--btn-color);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .logo-img {
+      height: 40px;
+      margin-right: 0.8rem;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li a, .nav-links li button {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    #members-section {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 1rem 2rem;
+      background-color: var(--background-light);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    #members-section h1 {
+      text-align: center;
+      font-weight: 800;
+      margin-bottom: 2rem;
+      color: var(--btn-color);
+    }
+
+    #members-section article {
+      margin-bottom: 2rem;
+    }
+
+    #members-section article h2 {
+      margin-bottom: 0.8rem;
+      border-bottom: 2px solid var(--btn-color);
+      padding-bottom: 0.3rem;
+      color: var(--btn-color);
+    }
+
+    #members-section ul {
+      list-style-type: disc;
+      margin-left: 1.5rem;
+      padding-left: 0;
+    }
+
+    #members-section ul li {
+      padding: 4px 0;
+      font-size: 1.1rem;
+      color: var(--text-color);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      background-color: #f0f0f0;
+      color: #666;
+      margin-top: 3rem;
+      font-size: 0.9rem;
+    }
+  </style>
+
   <script defer src="script.js"></script>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H5W55KST4J"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H5W55KST4J');
+  </script>
 </head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-H5W55KST4J"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-H5W55KST4J');
-</script>
 <body>
   <nav class="navbar">
     <a href="index.html" class="logo-title">
@@ -30,38 +137,38 @@
     </ul>
   </nav>
 
-  <section id="membri" class="section" style="max-width: 700px; margin: 2rem auto; color: var(--text-color);">
-    <h1 style="text-align: center; font-weight: 800; margin-bottom: 2rem; color: var(--btn-color);">I Membri del PRD</h1>
+  <section id="members-section" class="section">
+    <h1>I Membri del PRD</h1>
 
-    <article style="margin-bottom: 2rem;">
+    <article>
       <h2>Presidenti</h2>
       <ul>
         <li>Rauben10</li>
       </ul>
     </article>
 
-    <article style="margin-bottom: 2rem;">
+    <article>
       <h2>Vice Presidente</h2>
       <ul>
         <li>Giovaneddu</li>
       </ul>
     </article>
 
-    <article style="margin-bottom: 2rem;">
+    <article>
       <h2>Coordinatori</h2>
       <ul>
         <li>Th3Cr34t0r</li>
       </ul>
     </article>
 
-    <article style="margin-bottom: 2rem;">
+    <article>
       <h2>Tesoriere</h2>
       <ul>
         <li>NederSRM</li>
       </ul>
     </article>
 
-    <article style="margin-bottom: 2rem;">
+    <article>
       <h2>Addetto alle pubblicità</h2>
       <ul>
         <li>Sirlorenx29</li>
@@ -69,7 +176,7 @@
       </ul>
     </article>
 
-    <article style="margin-bottom: 2rem;">
+    <article>
       <h2>Propagandisti</h2>
       <ul>
         <li>Beatrica</li>
@@ -77,7 +184,7 @@
       </ul>
     </article>
 
-    <article style="margin-bottom: 2rem;">
+    <article>
       <h2>Tesserati</h2>
       <ul>
         <li>Emanuele1242</li>
