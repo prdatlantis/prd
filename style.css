@@ -110,6 +110,14 @@ body {
   background-color: #4752C4;
 }
 
+.telegram-btn {
+  background-color: #0088cc;
+}
+
+.telegram-btn:hover {
+  background-color: #0077b3;
+}
+
 footer {
   text-align: center;
   padding: 1rem;
