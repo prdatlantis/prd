@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6588851182589309" crossorigin="anonymous"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PRD - Merch</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
+  </head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H5W55KST4J"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-H5W55KST4J');
+  </script>
+  <body class="dark-mode">
+    <nav class="navbar">
+      <a href="index.html" class="logo-title">
+        <img src="logo.png" alt="Logo Coral" class="logo-img" />
+        <div class="title-text">
+          PRD<br />
+          <small>Partito Riformista Democratico</small>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="chi-siamo.html">Chi siamo</a></li>
+        <li><a href="membri.html">Membri</a></li>
+        <li><a href="contattaci.html">Contattaci</a></li>
+        <li><a href="regolamento.html">Regolamento</a></li>
+        <li><a href="merch.html">Merch</a></li>
+        <li><button id="theme-toggle" class="theme-toggle">Toggle Tema</button></li>
+      </ul>
+    </nav>
+
+    <section id="merch" class="section">
+      <h1>Conto Corrente</h1>
+      <div id="account-counter" class="account-counter">0</div>
+    </section>
+
+    <section id="login-form" class="section">
+      <h2>Accedi o Registrati</h2>
+      <form id="login" class="form-container">
+        <label for="username">Nome Utente</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit" class="btn">Accedi</button>
+      </form>
+    </section>
+
+    <section id="skin-form" class="section hidden">
+      <h2>Modulo per la tua Skin</h2>
+      <form id="skin-submission" class="form-container">
+        <label for="skin-name">Nome Utente</label>
+        <input type="text" id="skin-name" name="skin-name" required>
+        <label for="skin-desc">Descrivi la tua Skin</label>
+        <textarea id="skin-desc" name="skin-desc" rows="4" placeholder="Descrivi la tua skin" required onfocus="this.placeholder=''"></textarea>
+        <button type="submit" class="btn">Invia</button>
+      </form>
+    </section>
+
+    <section id="purchase-info" class="section hidden">
+      <h2>Acquista la tua Skin</h2>
+      <p id="skin-price-display"></p>
+      <button id="buy-btn" class="btn">Acquista</button>
+    </section>
+
+    <section id="download-section" class="section hidden">
+      <h2>Download</h2>
+      <a href="#" id="download-link" class="btn" download>Scarica la tua skin</a>
+    </section>
+
+    <section id="purchase-history" class="section hidden">
+      <h2>Skins Acquistate</h2>
+      <div id="skins-gallery" class="skins-gallery">
+        </div>
+    </section>
+
+    <footer>
+      &copy; 2025 Partito Riformista Democratico - Tutti i diritti riservati
+    </footer>
+    <script defer src="script.js"></script>
+    <script>
+      // Semplice logica per mostrare/nascondere le sezioni.
+      // Il backend dovrà gestire la vera logica di accesso e acquisto.
+      document.getElementById('login').addEventListener('submit', function(event) {
+        event.preventDefault();
+        document.getElementById('login-form').classList.add('hidden');
+        document.getElementById('skin-form').classList.remove('hidden');
+        document.getElementById('purchase-history').classList.remove('hidden');
+      });
+
+      document.getElementById('skin-submission').addEventListener('submit', function(event) {
+        event.preventDefault();
+        document.getElementById('skin-form').classList.add('hidden');
+        document.getElementById('purchase-info').classList.remove('hidden');
+        document.getElementById('skin-price-display').innerText = "Prezzo della skin: [PREZZO]";
+        
+      });
+
+      document.getElementById('buy-btn').addEventListener('click', function() {
+        // La logica di acquisto e controllo saldo va gestita nel backend
+        alert("Controlla il saldo e procedi con l'acquisto.");
+      });
+
+    </script>
+    <style>
+      .account-counter {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #4caf50;
+      }
+      .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 2rem;
+        background-color: var(--bg-color);
+        border-radius: 12px;
+      }
+      .form-container label {
+        font-weight: bold;
+      }
+      .form-container input, .form-container textarea {
+        padding: 0.8rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: var(--text-color);
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+  </body>
+</html>
