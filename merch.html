@@ -7,6 +7,26 @@
     <title>PRD - Merch</title>
     <link rel="stylesheet" href="style.css" />
     <script defer src="script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+
+<script>
+  // Incolla qui il codice di configurazione che trovi nella console di Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyDn5fbiFcgDB_FtA_eiRhW7xBemGRo_Ggo",
+    authDomain: "prdmerch-ae7dd.firebaseapp.com",
+    projectId: "prdmerch-ae7dd",
+    storageBucket: "prdmerch-ae7dd.firebasestorage.app",
+    messagingSenderId: "18418336840",
+    appId: "1:18418336840:web:a83e95df49a78a9767447d"
+  };
+
+  // Inizializza Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
   </head>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H5W55KST4J"></script>
   <script>
