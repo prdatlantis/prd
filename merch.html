@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>PRD - Merch</title>
     <link rel="stylesheet" href="style.css" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6588851182589309" crossorigin="anonymous"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H5W55KST4J"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-H5W55KST4J');
+    </script>
   </head>
   <body class="dark-mode">
     <nav class="navbar">
@@ -38,6 +46,7 @@
         <label for="password">Password</label>
         <input type="password" id="password" name="password" required>
         <button type="submit" class="btn">Accedi</button>
+        <button type="button" id="register-btn" class="btn">Registrati</button>
       </form>
     </section>
     <section id="skin-form" class="section hidden">
@@ -68,44 +77,113 @@
       &copy; 2025 Partito Riformista Democratico - Tutti i diritti riservati
     </footer>
     <script>
-      const REPLIT_URL = "https://il-tuo-progetto.replit.app";
+      const REPLIT_URL = "https://fd251c57-15f1-402b-92f5-e8de1d5dde4e-00-20q3xyu9q81kq.kirk.replit.dev/"; // Sostituisci con l'URL del tuo Replit
 
       const loginFormSection = document.getElementById('login-form');
       const skinFormSection = document.getElementById('skin-form');
       const logoutBtn = document.getElementById('logout-btn');
-      
-      document.getElementById('login').addEventListener('submit', async function(event) {
+      const accountCounter = document.getElementById('account-counter');
+      const skinDescInput = document.getElementById('skin-desc');
+      const purchaseHistory = document.getElementById('purchase-history');
+
+      let currentUsername = null;
+
+      async function updateUI() {
+          if (!currentUsername) return;
+          
+          // Aggiorna il saldo
+          const balanceResponse = await fetch(`${REPLIT_URL}/get_balance?username=${currentUsername}`);
+          const balanceData = await balanceResponse.json();
+          accountCounter.textContent = balanceData.balance;
+
+          // Aggiorna lo stato delle richieste
+          const requestsResponse = await fetch(`${REPLIT_URL}/get_requests?username=${currentUsername}`);
+          const requestsData = await requestsResponse.json();
+          
+          const gallery = document.getElementById('skins-gallery');
+          gallery.innerHTML = '';
+          requestsData.requests.forEach(req => {
+              const reqDiv = document.createElement('div');
+              reqDiv.className = 'skin-status';
+              reqDiv.innerHTML = `
+                  <p>ID Richiesta: ${req.request_id}</p>
+                  <p>Testo: ${req.request_text}</p>
+                  <p>Stato: ${req.status}</p>
+                  ${req.price ? `<p>Prezzo: ${req.price} Coral</p>` : ''}
+              `;
+              gallery.appendChild(reqDiv);
+          });
+      }
+
+      async function handleAuth(endpoint, data) {
+        try {
+          const response = await fetch(`${REPLIT_URL}${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          
+          const result = await response.json();
+          alert(result.message);
+
+          if (response.ok) {
+            currentUsername = data.username;
+            loginFormSection.classList.add('hidden');
+            skinFormSection.classList.remove('hidden');
+            purchaseHistory.classList.remove('hidden');
+            logoutBtn.classList.remove('hidden');
+            document.getElementById('skin-name').value = currentUsername;
+            updateUI();
+          }
+
+        } catch (error) {
+          alert('Errore di connessione al server.');
+        }
+      }
+
+      document.getElementById('login').addEventListener('submit', function(event) {
         event.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
-      
-        const response = await fetch(`${REPLIT_URL}/login`, {
+        handleAuth('/login', { username, password });
+      });
+
+      document.getElementById('register-btn').addEventListener('click', function() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        handleAuth('/register', { username, password });
+      });
+
+      document.getElementById('skin-submission').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const username = document.getElementById('skin-name').value;
+        const request_text = skinDescInput.value;
+        
+        const response = await fetch(`${REPLIT_URL}/submit_request`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ username, password })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, request_text })
         });
         
         const result = await response.json();
+        alert(result.message);
         
         if (response.ok) {
-          alert(`Accesso riuscito: ${result.message}`);
-          loginFormSection.classList.add('hidden');
-          skinFormSection.classList.remove('hidden');
-          logoutBtn.classList.remove('hidden');
-        } else {
-          alert(`Errore: ${result.message}`);
+          skinDescInput.value = '';
+          updateUI();
         }
       });
-      
+
       document.getElementById('logout-btn').addEventListener('click', function() {
+        currentUsername = null;
         loginFormSection.classList.remove('hidden');
         skinFormSection.classList.add('hidden');
+        purchaseHistory.classList.add('hidden');
         logoutBtn.classList.add('hidden');
         document.getElementById('username').value = '';
         document.getElementById('password').value = '';
-        alert("Logout effettuato con successo.");
+        accountCounter.textContent = '0';
+        alert("Logout effettuato.");
       });
     </script>
   </body>
