@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>PRD - Merch</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6588851182589309" crossorigin="anonymous"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H5W55KST4J"></script>
     <script>
@@ -33,51 +34,46 @@
         <li><button id="theme-toggle" class="theme-toggle">Toggle Tema</button></li>
       </ul>
     </nav>
-    <section id="merch" class="section">
+    <section id="merch-content" class="section">
       <h1>Conto Corrente</h1>
       <div id="account-counter" class="account-counter">0</div>
       <button id="logout-btn" class="btn hidden">Logout</button>
-    </section>
-    <section id="login-form" class="section">
-      <h2>Accedi o Registrati</h2>
-      <form id="login" class="form-container">
-        <label for="username">Nome Utente</label>
-        <input type="text" id="username" name="username" required>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-        <button type="submit" class="btn">Accedi</button>
-        <button type="button" id="register-btn" class="btn">Registrati</button>
-      </form>
-    </section>
-    <section id="skin-form" class="section hidden">
-      <h2>Modulo per la tua Skin</h2>
-      <form id="skin-submission" class="form-container">
-        <label for="skin-name">Nome Utente</label>
-        <input type="text" id="skin-name" name="skin-name" required>
-        <label for="skin-desc">Descrivi la tua Skin</label>
-        <textarea id="skin-desc" name="skin-desc" rows="4" placeholder="Descrivi la tua skin" required onfocus="this.placeholder=''"></textarea>
-        <button type="submit" class="btn">Invia</button>
-      </form>
-    </section>
-    <section id="purchase-info" class="section hidden">
-      <h2>Acquista la tua Skin</h2>
-      <p id="skin-price-display"></p>
-      <button id="buy-btn" class="btn">Acquista</button>
-    </section>
-    <section id="download-section" class="section hidden">
-      <h2>Download</h2>
-      <a href="#" id="download-link" class="btn" download>Scarica la tua skin</a>
-    </section>
-    <section id="purchase-history" class="section hidden">
-      <h2>Skins Acquistate</h2>
-      <div id="skins-gallery" class="skins-gallery">
-      </div>
+      <section id="login-form" class="section">
+        <h2>Accedi o Registrati</h2>
+        <form id="login" class="form-container">
+          <label for="username">Nome Utente</label>
+          <input type="text" id="username" name="username" required>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+          <button type="submit" class="btn">Accedi</button>
+          <button type="button" id="register-btn" class="btn">Registrati</button>
+        </form>
+      </section>
+      <section id="skin-form" class="section hidden">
+        <h2>Modulo per la tua Skin</h2>
+        <form id="skin-submission" class="form-container">
+          <label for="skin-name">Nome Utente</label>
+          <input type="text" id="skin-name" name="skin-name" required>
+          <label for="skin-desc">Descrivi la tua Skin</label>
+          <textarea id="skin-desc" name="skin-desc" rows="4" placeholder="Descrivi la tua skin" required onfocus="this.placeholder=''"></textarea>
+          <button type="submit" class="btn">Invia</button>
+        </form>
+      </section>
+      <section id="purchase-history" class="section hidden">
+        <h2>Skins Acquistate</h2>
+        <div id="skins-gallery" class="skins-gallery">
+        </div>
+      </section>
     </section>
     <footer>
       &copy; 2025 Partito Riformista Democratico - Tutti i diritti riservati
     </footer>
     <script>
-      const REPLIT_URL = "https://fd251c57-15f1-402b-92f5-e8de1d5dde4e-00-20q3xyu9q81kq.kirk.replit.dev/"; // Sostituisci con l'URL del tuo Replit
+      const SUPABASE_URL = "https://wvcqvsmjlrtaoytedvts.supabase.co"; 
+      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2Y3F2c21qbHJ0YW95dGVkdnRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3NjU2NDksImV4cCI6MjA3MTM0MTY0OX0.gz4N_eOpGSex2GYXSF8rvWJ6kzCjnM7jEJ4nYan4_A8";
+
+      const { createClient } = supabase;
+      const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       const loginFormSection = document.getElementById('login-form');
       const skinFormSection = document.getElementById('skin-form');
@@ -91,18 +87,32 @@
       async function updateUI() {
           if (!currentUsername) return;
           
-          // Aggiorna il saldo
-          const balanceResponse = await fetch(`${REPLIT_URL}/get_balance?username=${currentUsername}`);
-          const balanceData = await balanceResponse.json();
-          accountCounter.textContent = balanceData.balance;
+          const { data: userData, error: userError } = await supabaseClient
+              .from('users')
+              .select('balance')
+              .eq('username', currentUsername)
+              .single();
 
-          // Aggiorna lo stato delle richieste
-          const requestsResponse = await fetch(`${REPLIT_URL}/get_requests?username=${currentUsername}`);
-          const requestsData = await requestsResponse.json();
+          if (userError) {
+              console.error(userError);
+              accountCounter.textContent = 'Errore';
+          } else {
+              accountCounter.textContent = userData.balance;
+          }
+
+          const { data: requestsData, error: requestsError } = await supabaseClient
+              .from('skin_requests')
+              .select('*')
+              .eq('username', currentUsername);
           
+          if (requestsError) {
+              console.error(requestsError);
+              return;
+          }
+
           const gallery = document.getElementById('skins-gallery');
           gallery.innerHTML = '';
-          requestsData.requests.forEach(req => {
+          requestsData.forEach(req => {
               const reqDiv = document.createElement('div');
               reqDiv.className = 'skin-status';
               reqDiv.innerHTML = `
@@ -115,43 +125,64 @@
           });
       }
 
-      async function handleAuth(endpoint, data) {
-        try {
-          const response = await fetch(`${REPLIT_URL}${endpoint}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
-          
-          const result = await response.json();
-          alert(result.message);
-
-          if (response.ok) {
-            currentUsername = data.username;
-            loginFormSection.classList.add('hidden');
-            skinFormSection.classList.remove('hidden');
-            purchaseHistory.classList.remove('hidden');
-            logoutBtn.classList.remove('hidden');
-            document.getElementById('skin-name').value = currentUsername;
-            updateUI();
-          }
-
-        } catch (error) {
-          alert('Errore di connessione al server.');
+      async function handleAuth(isRegister, data) {
+        const { username, password } = data;
+        let result = {};
+        if (isRegister) {
+            const { data: existingUser } = await supabaseClient
+                .from('users')
+                .select('username')
+                .eq('username', username);
+            if (existingUser.length > 0) {
+                alert("Nome utente già esistente.");
+                return;
+            }
+            const { data: newUser, error } = await supabaseClient
+                .from('users')
+                .insert([{ username: username, password: password, balance: 0 }]);
+            if (error) {
+                result.message = 'Errore di registrazione: ' + error.message;
+            } else {
+                result.message = "Registrazione avvenuta con successo!";
+                handleSuccess(username);
+            }
+        } else {
+            const { data: user, error } = await supabaseClient
+                .from('users')
+                .select('password')
+                .eq('username', username)
+                .single();
+            if (user && user.password === password) {
+                result.message = "Accesso riuscito!";
+                handleSuccess(username);
+            } else {
+                result.message = "Credenziali non valide.";
+            }
         }
+        alert(result.message);
+      }
+
+      function handleSuccess(username) {
+        currentUsername = username;
+        loginFormSection.classList.add('hidden');
+        skinFormSection.classList.remove('hidden');
+        purchaseHistory.classList.remove('hidden');
+        logoutBtn.classList.remove('hidden');
+        document.getElementById('skin-name').value = currentUsername;
+        updateUI();
       }
 
       document.getElementById('login').addEventListener('submit', function(event) {
         event.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
-        handleAuth('/login', { username, password });
+        handleAuth(false, { username, password });
       });
 
       document.getElementById('register-btn').addEventListener('click', function() {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
-        handleAuth('/register', { username, password });
+        handleAuth(true, { username, password });
       });
 
       document.getElementById('skin-submission').addEventListener('submit', async function(event) {
@@ -159,18 +190,16 @@
         const username = document.getElementById('skin-name').value;
         const request_text = skinDescInput.value;
         
-        const response = await fetch(`${REPLIT_URL}/submit_request`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, request_text })
-        });
+        const { data, error } = await supabaseClient
+            .from('skin_requests')
+            .insert([{ username: username, request_text: request_text }]);
         
-        const result = await response.json();
-        alert(result.message);
-        
-        if (response.ok) {
-          skinDescInput.value = '';
-          updateUI();
+        if (error) {
+            alert('Errore nell\'invio della richiesta: ' + error.message);
+        } else {
+            alert("Richiesta inviata con successo!");
+            skinDescInput.value = '';
+            updateUI();
         }
       });
 
