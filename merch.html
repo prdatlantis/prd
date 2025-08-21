@@ -100,6 +100,30 @@
         transform: translateY(-5px);
         box-shadow: 0 6px 16px rgba(0,0,0,0.2);
       }
+      .merch-rules {
+        padding: 1.5rem;
+        background-color: #f4f4f4;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        margin-top: 1.5rem;
+      }
+      .dark-mode .merch-rules {
+        background-color: #333;
+      }
+      .merch-rules h3 {
+        color: #dc3545;
+        font-size: 1.5rem;
+        margin-top: 0;
+      }
+      .merch-rules p {
+        margin: 0;
+        line-height: 1.6;
+      }
+      .contact-info {
+        font-weight: bold;
+        color: #007bff;
+      }
     </style>
   </head>
   <body class="dark-mode">
@@ -125,6 +149,14 @@
       <h1>Conto Corrente</h1>
       <div id="account-counter" class="account-counter">0</div>
       <button id="logout-btn" class="btn hidden">Logout</button>
+      <button id="merch-rules-btn" class="btn hidden">Regolamento Merch</button>
+      <section id="merch-rules-text" class="merch-rules hidden">
+        <h3>REGOLAMENTO DEL MERCH</h3>
+        <p>È severamente vietato inviare richieste di realizzazione di skin che abbiano contenuti sensibili, che contengano sponsor, ad altri partiti o società.</p>
+        <p>Per ottenere una skin con uno sponsor, contattare:</p>
+        <p class="contact-info">Discord: @alberto_94746<br>o Telegram: @EspoAlberto</p>
+        <p>Se non si riesce a trovare la password del proprio account, contattare uno dei due contatti e vi ridarò la vostra password.</p>
+      </section>
       <section id="login-form" class="section">
         <h2>Accedi o Registrati</h2>
         <form id="login" class="form-container">
@@ -168,6 +200,8 @@
       const accountCounter = document.getElementById('account-counter');
       const skinDescInput = document.getElementById('skin-desc');
       const purchaseHistory = document.getElementById('purchase-history');
+      const merchRulesBtn = document.getElementById('merch-rules-btn');
+      const merchRulesText = document.getElementById('merch-rules-text');
 
       let currentUsername = null;
 
@@ -250,56 +284,74 @@
       }
 
       function handleSuccess(username) {
-        currentUsername = username;
-        loginFormSection.classList.add('hidden');
-        skinFormSection.classList.remove('hidden');
-        purchaseHistory.classList.remove('hidden');
-        logoutBtn.classList.remove('hidden');
-        document.getElementById('skin-name').value = currentUsername;
-        updateUI();
+          currentUsername = username;
+          localStorage.setItem('user_session', username); // Salva la sessione
+          loginFormSection.classList.add('hidden');
+          skinFormSection.classList.remove('hidden');
+          purchaseHistory.classList.remove('hidden');
+          logoutBtn.classList.remove('hidden');
+          merchRulesBtn.classList.remove('hidden'); // Mostra il nuovo pulsante
+          document.getElementById('skin-name').value = currentUsername;
+          updateUI();
       }
 
       document.getElementById('login').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        handleAuth(false, { username, password });
+          event.preventDefault();
+          const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
+          handleAuth(false, { username, password });
       });
 
       document.getElementById('register-btn').addEventListener('click', function() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        handleAuth(true, { username, password });
+          const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
+          handleAuth(true, { username, password });
       });
 
       document.getElementById('skin-submission').addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const username = document.getElementById('skin-name').value;
-        const request_text = skinDescInput.value;
-        
-        const { data, error } = await supabaseClient
-            .from('skin_requests')
-            .insert([{ username: username, request_text: request_text }]);
-        
-        if (error) {
-            alert('Errore nell\'invio della richiesta: ' + error.message);
-        } else {
-            alert("Richiesta inviata con successo!");
-            skinDescInput.value = '';
-            updateUI();
-        }
+          event.preventDefault();
+          const username = document.getElementById('skin-name').value;
+          const request_text = skinDescInput.value;
+          
+          const { data, error } = await supabaseClient
+              .from('skin_requests')
+              .insert([{ username: username, request_text: request_text }]);
+          
+          if (error) {
+              alert('Errore nell\'invio della richiesta: ' + error.message);
+          } else {
+              alert("Richiesta inviata con successo!");
+              skinDescInput.value = '';
+              updateUI();
+          }
       });
 
       document.getElementById('logout-btn').addEventListener('click', function() {
-        currentUsername = null;
-        loginFormSection.classList.remove('hidden');
-        skinFormSection.classList.add('hidden');
-        purchaseHistory.classList.add('hidden');
-        logoutBtn.classList.add('hidden');
-        document.getElementById('username').value = '';
-        document.getElementById('password').value = '';
-        accountCounter.textContent = '0';
-        alert("Logout effettuato.");
+          localStorage.removeItem('user_session'); // Rimuovi la sessione
+          currentUsername = null;
+          loginFormSection.classList.remove('hidden');
+          skinFormSection.classList.add('hidden');
+          purchaseHistory.classList.add('hidden');
+          logoutBtn.classList.add('hidden');
+          merchRulesBtn.classList.add('hidden'); // Nascondi il pulsante
+          merchRulesText.classList.add('hidden'); // Nascondi il testo
+          document.getElementById('username').value = '';
+          document.getElementById('password').value = '';
+          accountCounter.textContent = '0';
+          alert("Logout effettuato.");
+      });
+
+      // Funzione per controllare la sessione all'avvio
+      document.addEventListener('DOMContentLoaded', () => {
+          const savedUsername = localStorage.getItem('user_session');
+          if (savedUsername) {
+              handleSuccess(savedUsername);
+          }
+      });
+
+      // Gestione del nuovo tasto "Regolamento Merch"
+      merchRulesBtn.addEventListener('click', () => {
+          merchRulesText.classList.toggle('hidden');
       });
     </script>
   </body>
