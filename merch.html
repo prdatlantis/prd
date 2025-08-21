@@ -6,14 +6,34 @@
     <title>PRD - Merch</title>
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6588851182589309" crossorigin="anonymous"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H5W55KST4J"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-H5W55KST4J');
-    </script>
+    <style>
+      /* Stili specifici per la pagina merch */
+      .account-counter {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #28a745;
+        margin-bottom: 1rem;
+      }
+
+      .skins-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      .skin-status {
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        text-align: left;
+        max-width: 250px;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
   </head>
   <body class="dark-mode">
     <nav class="navbar">
