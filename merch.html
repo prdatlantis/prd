@@ -126,14 +126,13 @@
       <div id="account-counter" class="account-counter">0</div>
       <button id="logout-btn" class="btn hidden">Logout</button>
       <section id="login-form" class="section">
-        <h2>Accedi o Registrati</h2>
+        <h2>Accedi</h2>
         <form id="login" class="form-container">
           <label for="username">Nome Utente</label>
           <input type="text" id="username" name="username" required>
           <label for="password">Password</label>
           <input type="password" id="password" name="password" required>
           <button type="submit" class="btn">Accedi</button>
-          <button type="button" id="register-btn" class="btn">Registrati</button>
         </form>
       </section>
       <section id="skin-form" class="section hidden">
@@ -212,64 +211,34 @@
           });
       }
 
-      async function handleAuth(isRegister, data) {
+      async function handleLogin(data) {
         const { username, password } = data;
-        let result = {};
-        if (isRegister) {
-            const { data: existingUser } = await supabaseClient
-                .from('users')
-                .select('username')
-                .eq('username', username);
-            if (existingUser.length > 0) {
-                alert("Nome utente già esistente.");
-                return;
-            }
-            const { data: newUser, error } = await supabaseClient
-                .from('users')
-                .insert([{ username: username, password: password, balance: 0 }]);
-            if (error) {
-                result.message = 'Errore di registrazione: ' + error.message;
-            } else {
-                result.message = "Registrazione avvenuta con successo!";
-                handleSuccess(username);
-            }
-        } else {
-            const { data: user, error } = await supabaseClient
-                .from('users')
-                .select('password')
-                .eq('username', username)
-                .single();
-            if (user && user.password === password) {
-                result.message = "Accesso riuscito!";
-                handleSuccess(username);
-            } else {
-                result.message = "Credenziali non valide.";
-            }
-        }
-        alert(result.message);
-      }
+        
+        const { data: user, error } = await supabaseClient
+            .from('users')
+            .select('password')
+            .eq('username', username)
+            .single();
 
-      function handleSuccess(username) {
-        currentUsername = username;
-        loginFormSection.classList.add('hidden');
-        skinFormSection.classList.remove('hidden');
-        purchaseHistory.classList.remove('hidden');
-        logoutBtn.classList.remove('hidden');
-        document.getElementById('skin-name').value = currentUsername;
-        updateUI();
+        if (user && user.password === password) {
+            alert("Accesso riuscito!");
+            currentUsername = username;
+            loginFormSection.classList.add('hidden');
+            skinFormSection.classList.remove('hidden');
+            purchaseHistory.classList.remove('hidden');
+            logoutBtn.classList.remove('hidden');
+            document.getElementById('skin-name').value = currentUsername;
+            updateUI();
+        } else {
+            alert("Credenziali non valide.");
+        }
       }
 
       document.getElementById('login').addEventListener('submit', function(event) {
         event.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
-        handleAuth(false, { username, password });
-      });
-
-      document.getElementById('register-btn').addEventListener('click', function() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        handleAuth(true, { username, password });
+        handleLogin({ username, password });
       });
 
       document.getElementById('skin-submission').addEventListener('submit', async function(event) {
