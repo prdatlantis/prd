@@ -247,50 +247,50 @@
       }
 
       async function handleAuth(isRegister, data) {
-        const { username, password } = data;
-        let result = {};
-        if (isRegister) {
-            const { data: existingUser } = await supabaseClient
-                .from('users')
-                .select('username')
-                .eq('username', username);
-            if (existingUser.length > 0) {
-                alert("Nome utente già esistente.");
-                return;
-            }
-            const { data: newUser, error } = await supabaseClient
-                .from('users')
-                .insert([{ username: username, password: password, balance: 0 }]);
-            if (error) {
-                result.message = 'Errore di registrazione: ' + error.message;
-            } else {
-                result.message = "Registrazione avvenuta con successo!";
-                handleSuccess(username);
-            }
-        } else {
-            const { data: user, error } = await supabaseClient
-                .from('users')
-                .select('password')
-                .eq('username', username)
-                .single();
-            if (user && user.password === password) {
-                result.message = "Accesso riuscito!";
-                handleSuccess(username);
-            } else {
-                result.message = "Credenziali non valide.";
-            }
-        }
-        alert(result.message);
+          const { username, password } = data;
+          let result = {};
+          if (isRegister) {
+              const { data: existingUser } = await supabaseClient
+                  .from('users')
+                  .select('username')
+                  .eq('username', username);
+              if (existingUser.length > 0) {
+                  alert("Nome utente già esistente.");
+                  return;
+              }
+              const { data: newUser, error } = await supabaseClient
+                  .from('users')
+                  .insert([{ username: username, password: password, balance: 0 }]);
+              if (error) {
+                  result.message = 'Errore di registrazione: ' + error.message;
+              } else {
+                  result.message = "Registrazione avvenuta con successo!";
+                  handleSuccess(username);
+              }
+          } else {
+              const { data: user, error } = await supabaseClient
+                  .from('users')
+                  .select('password')
+                  .eq('username', username)
+                  .single();
+              if (user && user.password === password) {
+                  result.message = "Accesso riuscito!";
+                  handleSuccess(username);
+              } else {
+                  result.message = "Credenziali non valide.";
+              }
+          }
+          alert(result.message);
       }
 
       function handleSuccess(username) {
           currentUsername = username;
-          localStorage.setItem('user_session', username); // Salva la sessione
+          localStorage.setItem('user_session', username);
           loginFormSection.classList.add('hidden');
           skinFormSection.classList.remove('hidden');
           purchaseHistory.classList.remove('hidden');
           logoutBtn.classList.remove('hidden');
-          merchRulesBtn.classList.remove('hidden'); // Mostra il nuovo pulsante
+          merchRulesBtn.classList.remove('hidden');
           document.getElementById('skin-name').value = currentUsername;
           updateUI();
       }
@@ -327,14 +327,14 @@
       });
 
       document.getElementById('logout-btn').addEventListener('click', function() {
-          localStorage.removeItem('user_session'); // Rimuovi la sessione
+          localStorage.removeItem('user_session');
           currentUsername = null;
           loginFormSection.classList.remove('hidden');
           skinFormSection.classList.add('hidden');
           purchaseHistory.classList.add('hidden');
           logoutBtn.classList.add('hidden');
-          merchRulesBtn.classList.add('hidden'); // Nascondi il pulsante
-          merchRulesText.classList.add('hidden'); // Nascondi il testo
+          merchRulesBtn.classList.add('hidden');
+          merchRulesText.classList.add('hidden');
           document.getElementById('username').value = '';
           document.getElementById('password').value = '';
           accountCounter.textContent = '0';
