@@ -10,8 +10,6 @@ const logoutBtn = document.getElementById('logout-btn');
 const accountCounter = document.getElementById('account-counter');
 const skinDescInput = document.getElementById('skin-desc');
 const purchaseHistory = document.getElementById('purchase-history');
-const merchRulesBtn = document.getElementById('merch-rules-btn');
-const merchRulesText = document.getElementById('merch-rules-text');
 const skinNameInput = document.getElementById('skin-name');
 
 let currentUsername = null;
@@ -63,7 +61,6 @@ async function updateUI() {
 
         reqDiv.innerHTML = htmlContent;
         
-        // Mostra il pulsante "Acquista" solo se il prezzo è impostato e la skin non è già stata acquistata
         if (req.price && req.status !== 'Acquistato') {
           const buyButton = document.createElement('button');
           buyButton.textContent = 'Acquista';
@@ -86,26 +83,19 @@ async function purchaseSkin(requestId, price) {
       return;
   }
 
-  // 1. Leggi il saldo attuale dell'utente
   const { data: userData, error: userError } = await supabaseClient
       .from('users')
       .select('balance')
       .eq('username', currentUsername)
       .single();
   
-  if (userError || !userData) {
-      alert('Errore nel leggere il tuo saldo. Riprova più tardi.');
-      return;
-  }
-
-  if (userData.balance < price) {
+  if (userError || !userData || userData.balance < price) {
       alert("Saldo insufficiente per l'acquisto.");
       return;
   }
 
   const newBalance = userData.balance - price;
 
-  // 2. Aggiorna il saldo e lo stato della richiesta
   const { error: balanceUpdateError } = await supabaseClient
       .from('users')
       .update({ balance: newBalance })
@@ -129,7 +119,7 @@ async function purchaseSkin(requestId, price) {
   }
   
   alert("Acquisto completato con successo!");
-  updateUI(); // Aggiorna la UI per mostrare il nuovo saldo e lo stato della skin
+  updateUI();
 }
 
 async function handleAuth(isRegister, data) {
@@ -180,7 +170,6 @@ function handleSuccess(username) {
     skinFormSection.classList.remove('hidden');
     purchaseHistory.classList.remove('hidden');
     logoutBtn.classList.remove('hidden');
-    merchRulesBtn.classList.remove('hidden');
     skinNameInput.value = currentUsername;
     updateUI();
 }
@@ -223,23 +212,15 @@ document.getElementById('logout-btn').addEventListener('click', function() {
     skinFormSection.classList.add('hidden');
     purchaseHistory.classList.add('hidden');
     logoutBtn.classList.add('hidden');
-    merchRulesBtn.classList.add('hidden');
-    merchRulesText.classList.add('hidden');
     document.getElementById('username').value = '';
     document.getElementById('password').value = '';
     accountCounter.textContent = '0';
     alert("Logout effettuato.");
 });
 
-// Funzione per controllare la sessione all'avvio
 document.addEventListener('DOMContentLoaded', () => {
     const savedUsername = localStorage.getItem('user_session');
     if (savedUsername) {
         handleSuccess(savedUsername);
     }
-});
-
-// Gestione del nuovo tasto "Regolamento Merch"
-merchRulesBtn.addEventListener('click', () => {
-    merchRulesText.classList.toggle('hidden');
 });
