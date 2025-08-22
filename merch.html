@@ -273,7 +273,12 @@
                   .select('password')
                   .eq('username', username)
                   .single();
-              if (user && user.password === password) {
+              
+              if (error) {
+                // Gestisce errori di query (es. RLS)
+                console.error("Errore di query Supabase:", error);
+                result.message = "Errore di connessione. Riprova più tardi.";
+              } else if (user && user.password === password) {
                   result.message = "Accesso riuscito!";
                   handleSuccess(username);
               } else {
