@@ -4,32 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PRD - Merch</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-      /* Stili generali */
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        background-color: #1a1a1a;
-        color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-        text-align: center;
-      }
-      .section {
-        padding: 2rem 1rem;
-        margin: 0 auto;
-        max-width: 800px;
-      }
-      .hidden {
-        display: none;
-      }
-      
-      /* Stili per il conto e i moduli */
+      /* Stili specifici per la pagina merch */
       .account-counter {
         font-size: 2.5rem;
         font-weight: bold;
         color: #28a745;
         margin-bottom: 1rem;
+        transition: transform 0.3s ease-in-out;
+      }
+      .account-counter:hover {
+        transform: scale(1.05);
       }
       .form-container {
         display: flex;
@@ -37,18 +24,35 @@
         gap: 1rem;
         align-items: center;
         padding: 2rem;
-        background-color: #2c2c2c;
+        background-color: #f9f9f9;
         border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+      }
+      .dark-mode .form-container {
+        background-color: #2c2c2c;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+      .form-container:hover {
+        transform: translateY(-5px);
       }
       .form-container input, .form-container textarea {
         width: 100%;
         max-width: 300px;
         padding: 0.75rem;
-        border: 2px solid #555;
+        border: 2px solid #ddd;
         border-radius: 8px;
+        transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+      .dark-mode .form-container input, .dark-mode .form-container textarea {
         background-color: #333;
         color: #f4f4f4;
+        border: 2px solid #555;
+      }
+      .form-container input:focus, .form-container textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.6);
+        outline: none;
       }
       .btn {
         padding: 0.75rem 1.5rem;
@@ -58,9 +62,19 @@
         color: white;
         font-size: 1rem;
         cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
       }
-      
-      /* Stili per la galleria */
+      .btn:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+      }
+      .btn:active {
+        transform: scale(0.95);
+      }
+      .hidden {
+        display: none;
+      }
       .skins-gallery {
         display: flex;
         flex-wrap: wrap;
@@ -69,20 +83,80 @@
       }
       .skin-status {
         padding: 1rem;
-        border: 1px solid #444;
+        border: 1px solid #ccc;
         border-radius: 8px;
         text-align: left;
         max-width: 250px;
+        background-color: #fff;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+      .dark-mode .skin-status {
         background-color: #222;
+        border: 1px solid #444;
         box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      }
+      .skin-status:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+      }
+      .merch-rules {
+        padding: 1.5rem;
+        background-color: #f4f4f4;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        margin-top: 1.5rem;
+      }
+      .dark-mode .merch-rules {
+        background-color: #333;
+      }
+      .merch-rules h3 {
+        color: #dc3545;
+        font-size: 1.5rem;
+        margin-top: 0;
+      }
+      .merch-rules p {
+        margin: 0;
+        line-height: 1.6;
+      }
+      .contact-info {
+        font-weight: bold;
+        color: #007bff;
       }
     </style>
   </head>
-  <body>
+  <body class="dark-mode">
+    <nav class="navbar">
+      <a href="index.html" class="logo-title">
+        <img src="logo.png" alt="Logo Coral" class="logo-img" />
+        <div class="title-text">
+          PRD<br />
+          <small>Partito Riformista Democratico</small>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="chi-siamo.html">Chi siamo</a></li>
+        <li><a href="membri.html">Membri</a></li>
+        <li><a href="contattaci.html">Contattaci</a></li>
+        <li><a href="regolamento.html">Regolamento</a></li>
+        <li><a href="merch.html">Merch</a></li>
+        <li><button id="theme-toggle" class="theme-toggle">Toggle Tema</button></li>
+      </ul>
+    </nav>
     <section id="merch-content" class="section">
       <h1>Conto Corrente</h1>
       <div id="account-counter" class="account-counter">0</div>
       <button id="logout-btn" class="btn hidden">Logout</button>
+      <button id="merch-rules-btn" class="btn hidden">Regolamento Merch</button>
+      <section id="merch-rules-text" class="merch-rules hidden">
+        <h3>REGOLAMENTO DEL MERCH</h3>
+        <p>È severamente vietato inviare richieste di realizzazione di skin che abbiano contenuti sensibili, che contengano sponsor, ad altri partiti o società.</p>
+        <p>Per ottenere una skin con uno sponsor, contattare:</p>
+        <p class="contact-info">Discord: @alberto_94746<br>o Telegram: @EspoAlberto</p>
+        <p>Se non si riesce a trovare la password del proprio account, contattare uno dei due contatti e vi ridarò la vostra password.</p>
+      </section>
       <section id="login-form" class="section">
         <h2>Accedi o Registrati</h2>
         <form id="login" class="form-container">
@@ -100,243 +174,19 @@
           <label for="skin-name">Nome Utente</label>
           <input type="text" id="skin-name" name="skin-name" required>
           <label for="skin-desc">Descrivi la tua Skin</label>
-          <textarea id="skin-desc" name="skin-desc" rows="4" placeholder="Descrivi la tua skin" required></textarea>
+          <textarea id="skin-desc" name="skin-desc" rows="4" placeholder="Descrivi la tua skin" required onfocus="this.placeholder=''"></textarea>
           <button type="submit" class="btn">Invia</button>
         </form>
       </section>
       <section id="purchase-history" class="section hidden">
         <h2>Skins Acquistate</h2>
-        <div id="skins-gallery" class="skins-gallery"></div>
+        <div id="skins-gallery" class="skins-gallery">
+        </div>
       </section>
     </section>
-    <script>
-      // INSERISCI QUI LE TUE CHIAVI API DI SUPABASE
-      const SUPABASE_URL = "https://wvcqvsmjlrtaoytedvts.supabase.co"; 
-      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2Y3F2c21qbHJ0YW95dGVkdnRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3NjU2NDksImV4cCI6MjA3MTM0MTY0OX0.gz4N_eOpGSex2GYXSF8rvWJ6kzCjnM7jEJ4nYan4_A8";
-
-      const { createClient } = supabase;
-      const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-      const loginFormSection = document.getElementById('login-form');
-      const skinFormSection = document.getElementById('skin-form');
-      const logoutBtn = document.getElementById('logout-btn');
-      const accountCounter = document.getElementById('account-counter');
-      const skinDescInput = document.getElementById('skin-desc');
-      const purchaseHistory = document.getElementById('purchase-history');
-      const skinNameInput = document.getElementById('skin-name');
-
-      let currentUsername = null;
-
-      async function updateUI() {
-          if (!currentUsername) return;
-          
-          const { data: userData, error: userError } = await supabaseClient
-              .from('users')
-              .select('balance')
-              .eq('username', currentUsername)
-              .single();
-
-          if (userError) {
-              console.error(userError);
-              accountCounter.textContent = 'Errore';
-          } else {
-              accountCounter.textContent = userData.balance;
-          }
-
-          const { data: requestsData, error: requestsError } = await supabaseClient
-              .from('skin_requests')
-              .select('*')
-              .eq('username', currentUsername);
-          
-          if (requestsError) {
-              console.error(requestsError);
-              return;
-          }
-
-          const gallery = document.getElementById('skins-gallery');
-          gallery.innerHTML = '';
-          requestsData.forEach(req => {
-              const reqDiv = document.createElement('div');
-              reqDiv.className = 'skin-status';
-              let htmlContent = `
-                  <p>ID Richiesta: ${req.request_id}</p>
-                  <p>Testo: ${req.request_text}</p>
-                  <p>Stato: ${req.status}</p>
-              `;
-
-              if (req.price) {
-                htmlContent += `<p>Prezzo: ${req.price} Coral</p>`;
-              }
-              
-              if (req.status === 'Acquistato' && req.download_link) {
-                  htmlContent += `<p>Download: <a href="${req.download_link}" target="_blank">Clicca qui</a></p>`;
-              }
-
-              reqDiv.innerHTML = htmlContent;
-              
-              if (req.price && req.status !== 'Acquistato') {
-                const buyButton = document.createElement('button');
-                buyButton.textContent = 'Acquista';
-                buyButton.className = 'btn';
-                buyButton.onclick = () => purchaseSkin(req.request_id, req.price);
-                reqDiv.appendChild(buyButton);
-              }
-              gallery.appendChild(reqDiv);
-          });
-      }
-
-      async function purchaseSkin(requestId, price) {
-        if (!currentUsername) {
-            alert("Devi essere loggato per acquistare.");
-            return;
-        }
-        
-        const confirmPurchase = confirm(`Sei sicuro di voler acquistare questa skin per ${price} Coral?`);
-        if (!confirmPurchase) {
-            return;
-        }
-
-        const { data: userData, error: userError } = await supabaseClient
-            .from('users')
-            .select('balance')
-            .eq('username', currentUsername)
-            .single();
-        
-        if (userError || !userData || userData.balance < price) {
-            alert("Saldo insufficiente per l'acquisto.");
-            return;
-        }
-
-        const newBalance = userData.balance - price;
-
-        const { error: balanceUpdateError } = await supabaseClient
-            .from('users')
-            .update({ balance: newBalance })
-            .eq('username', currentUsername);
-
-        if (balanceUpdateError) {
-            alert("Errore nell'aggiornare il tuo saldo.");
-            console.error("Errore UPDATE users:", balanceUpdateError);
-            return;
-        }
-
-        const { error: requestUpdateError } = await supabaseClient
-            .from('skin_requests')
-            .update({ status: 'Acquistato' })
-            .eq('request_id', requestId);
-
-        if (requestUpdateError) {
-            alert("Errore nell'aggiornare lo stato della richiesta.");
-            console.error("Errore UPDATE skin_requests:", requestUpdateError);
-            return;
-        }
-        
-        alert("Acquisto completato con successo!");
-        updateUI();
-      }
-
-      async function handleAuth(isRegister, data) {
-          const { username, password } = data;
-          let result = {};
-          if (isRegister) {
-              const { data: existingUser } = await supabaseClient
-                  .from('users')
-                  .select('username')
-                  .eq('username', username);
-              if (existingUser.length > 0) {
-                  alert("Nome utente già esistente.");
-                  return;
-              }
-              const { data: newUser, error } = await supabaseClient
-                  .from('users')
-                  .insert([{ username: username, password: password, balance: 0 }]);
-              if (error) {
-                  result.message = 'Errore di registrazione: ' + error.message;
-              } else {
-                  result.message = "Registrazione avvenuta con successo!";
-                  handleSuccess(username);
-              }
-          } else {
-              const { data: user, error } = await supabaseClient
-                  .from('users')
-                  .select('password')
-                  .eq('username', username)
-                  .single();
-              
-              if (error) {
-                console.error("Errore di query Supabase:", error);
-                result.message = "Errore di connessione. Riprova più tardi.";
-              } else if (user && user.password === password) {
-                  result.message = "Accesso riuscito!";
-                  handleSuccess(username);
-              } else {
-                  result.message = "Credenziali non valide.";
-              }
-          }
-          alert(result.message);
-      }
-
-      function handleSuccess(username) {
-          currentUsername = username;
-          localStorage.setItem('user_session', username);
-          loginFormSection.classList.add('hidden');
-          skinFormSection.classList.remove('hidden');
-          purchaseHistory.classList.remove('hidden');
-          logoutBtn.classList.remove('hidden');
-          skinNameInput.value = currentUsername;
-          updateUI();
-      }
-
-      document.getElementById('login').addEventListener('submit', function(event) {
-          event.preventDefault();
-          const username = document.getElementById('username').value;
-          const password = document.getElementById('password').value;
-          handleAuth(false, { username, password });
-      });
-
-      document.getElementById('register-btn').addEventListener('click', function() {
-          const username = document.getElementById('username').value;
-          const password = document.getElementById('password').value;
-          handleAuth(true, { username, password });
-      });
-
-      document.getElementById('skin-submission').addEventListener('submit', async function(event) {
-          event.preventDefault();
-          const username = document.getElementById('skin-name').value;
-          const request_text = skinDescInput.value;
-          
-          const { data, error } = await supabaseClient
-              .from('skin_requests')
-              .insert([{ username: username, request_text: request_text }]);
-          
-          if (error) {
-              alert('Errore nell\'invio della richiesta: ' + error.message);
-          } else {
-              alert("Richiesta inviata con successo!");
-              skinDescInput.value = '';
-              updateUI();
-          }
-      });
-
-      document.getElementById('logout-btn').addEventListener('click', function() {
-          localStorage.removeItem('user_session');
-          currentUsername = null;
-          loginFormSection.classList.remove('hidden');
-          skinFormSection.classList.add('hidden');
-          purchaseHistory.classList.add('hidden');
-          logoutBtn.classList.add('hidden');
-          document.getElementById('username').value = '';
-          document.getElementById('password').value = '';
-          accountCounter.textContent = '0';
-          alert("Logout effettuato.");
-      });
-
-      document.addEventListener('DOMContentLoaded', () => {
-          const savedUsername = localStorage.getItem('user_session');
-          if (savedUsername) {
-              handleSuccess(savedUsername);
-          }
-      });
-    </script>
+    <footer>
+      &copy; 2025 Partito Riformista Democratico - Tutti i diritti riservati
+    </footer>
+    <script src="merch.js"></script>
   </body>
 </html>
