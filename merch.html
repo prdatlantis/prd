@@ -236,12 +236,21 @@
           requestsData.forEach(req => {
               const reqDiv = document.createElement('div');
               reqDiv.className = 'skin-status';
-              reqDiv.innerHTML = `
+              let htmlContent = `
                   <p>ID Richiesta: ${req.request_id}</p>
                   <p>Testo: ${req.request_text}</p>
                   <p>Stato: ${req.status}</p>
-                  ${req.price ? `<p>Prezzo: ${req.price} Coral</p>` : ''}
               `;
+
+              if (req.price) {
+                htmlContent += `<p>Prezzo: ${req.price} Coral</p>`;
+              }
+              
+              if (req.status === 'Acquistato' && req.download_link) {
+                  htmlContent += `<p>Download: <a href="${req.download_link}" target="_blank">Clicca qui</a></p>`;
+              }
+
+              reqDiv.innerHTML = htmlContent;
               
               // Mostra il pulsante "Acquista" solo se il prezzo è impostato e la skin non è già stata acquistata
               if (req.price && req.status !== 'Acquistato') {
@@ -293,7 +302,7 @@
 
         if (balanceUpdateError) {
             alert("Errore nell'aggiornare il tuo saldo.");
-            console.error(balanceUpdateError);
+            console.error("Errore UPDATE users:", balanceUpdateError);
             return;
         }
 
@@ -304,7 +313,7 @@
 
         if (requestUpdateError) {
             alert("Errore nell'aggiornare lo stato della richiesta.");
-            console.error(requestUpdateError);
+            console.error("Errore UPDATE skin_requests:", requestUpdateError);
             return;
         }
         
