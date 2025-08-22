@@ -156,7 +156,6 @@
         <p>Per ottenere una skin con uno sponsor, contattare:</p>
         <p class="contact-info">Discord: @alberto_94746<br>o Telegram: @EspoAlberto</p>
         <p>Se non si riesce a trovare la password del proprio account, contattare uno dei due contatti e vi ridarò la vostra password.</p>
-        <p>Per ricariche all'account contattare sempre uno tra i due contatti per stabilire l'incontro per il pagamento in game, subito dopo vi invierò la ricarica. Se per qualche motivo non la si riceve contattatemi.</p>
       </section>
       <section id="login-form" class="section">
         <h2>Accedi o Registrati</h2>
@@ -244,75 +243,11 @@
                   ${req.price ? `<p>Prezzo: ${req.price} Coral</p>` : ''}
               `;
               
-              // // Mostra il pulsante "Acquista" solo se il prezzo è impostato e la skin non è già stata acquistata
-              if (req.price && req.status !== 'Acquistato') {
-                const buyButton = document.createElement('button');
-                buyButton.textContent = 'Acquista';
-                buyButton.className = 'btn';
-                buyButton.onclick = () => purchaseSkin(req.request_id, req.price);
-                reqDiv.appendChild(buyButton);
-              }
-              // gallery.appendChild(reqDiv);
+              gallery.appendChild(reqDiv);
           });
       }
 
-      // async function purchaseSkin(requestId, price) {
-        if (!currentUsername) {
-            alert("Devi essere loggato per acquistare.");
-            return;
-        }
-
-        const confirmPurchase = confirm(`Sei sicuro di voler acquistare questa skin per ${price} Coral?`);
-        if (!confirmPurchase) {
-            return;
-        }
-
-        // 1. Leggi il saldo attuale dell'utente
-        const { data: userData, error: userError } = await supabaseClient
-            .from('users')
-            .select('balance')
-            .eq('username', currentUsername)
-            .single();
-        
-        if (userError || !userData) {
-            alert('Errore nel leggere il tuo saldo. Riprova più tardi.');
-            return;
-        }
-
-        if (userData.balance < price) {
-            alert("Saldo insufficiente per l'acquisto.");
-            return;
-        }
-
-        const newBalance = userData.balance - price;
-
-        // 2. Aggiorna il saldo e lo stato della richiesta in un'unica transazione
-        const { error: balanceUpdateError } = await supabaseClient
-            .from('users')
-            .update({ balance: newBalance })
-            .eq('username', currentUsername);
-
-        if (balanceUpdateError) {
-            alert("Errore nell'aggiornare il tuo saldo.");
-            console.error(balanceUpdateError);
-            return;
-        }
-
-        const { error: requestUpdateError } = await supabaseClient
-            .from('skin_requests')
-            .update({ status: 'Acquistato' })
-            .eq('request_id', requestId);
-
-        if (requestUpdateError) {
-            alert("Errore nell'aggiornare lo stato della richiesta.");
-            console.error(requestUpdateError);
-            return;
-        }
-        
-        alert("Acquisto completato con successo!");
-        updateUI(); // Aggiorna la UI per mostrare il nuovo saldo e lo stato della skin
-      }
-      // async function handleAuth(isRegister, data) {
+      async function handleAuth(isRegister, data) {
           const { username, password } = data;
           let result = {};
           if (isRegister) {
