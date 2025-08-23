@@ -6,12 +6,15 @@
     <title>PRD - Merch</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-      /* IL TUO CSS ESATTO */
       :root {
         --text-color: #ffffff;
         --bg-color: rgba(0, 0, 0, 0.7);
         --btn-color: #4caf50;
         --btn-hover: #45a049;
+        --form-bg: rgba(255, 255, 255, 0.1);
+        --form-border: 1px solid rgba(255, 255, 255, 0.2);
+        --input-bg: rgba(255, 255, 255, 0.05);
+        --input-border: 1px solid rgba(255, 255, 255, 0.3);
       }
 
       body {
@@ -30,6 +33,10 @@
         --bg-color: rgba(30, 30, 30, 0.8);
         --btn-color: #1e88e5;
         --btn-hover: #1565c0;
+        --form-bg: rgba(255, 255, 255, 0.05);
+        --form-border: 1px solid rgba(255, 255, 255, 0.1);
+        --input-bg: rgba(255, 255, 255, 0.02);
+        --input-border: 1px solid rgba(255, 255, 255, 0.2);
       }
 
       .navbar {
@@ -92,39 +99,109 @@
         animation: fadeIn 1s ease-in-out;
       }
 
+      .hidden {
+        display: none;
+      }
+
+      /* Stili Migliorati per pulsanti e campi */
       .btn {
         background-color: var(--btn-color);
         color: white;
         padding: 0.7rem 1.5rem;
-        border: none;
+        border: 2px solid var(--btn-color);
         border-radius: 10px;
         font-size: 1rem;
         cursor: pointer;
-        transition: transform 0.2s, background-color 0.3s;
+        transition: transform 0.2s, background-color 0.3s, box-shadow 0.3s;
         display: inline-block;
         margin-top: 1rem;
         text-decoration: none;
       }
-
       .btn:hover {
         background-color: var(--btn-hover);
         transform: scale(1.05);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+      .btn:active {
+        transform: scale(0.95);
+      }
+      .btn.outline {
+        background-color: transparent;
+        border-color: var(--btn-color);
+        color: var(--btn-color);
+      }
+      .btn.outline:hover {
+        background-color: var(--btn-color);
+        color: white;
+      }
+      .form-container input, .form-container textarea {
+        width: 100%;
+        max-width: 300px;
+        padding: 0.75rem;
+        border: var(--input-border);
+        border-radius: 8px;
+        background-color: var(--input-bg);
+        color: var(--text-color);
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+      .form-container input:focus, .form-container textarea:focus {
+        border-color: var(--btn-color);
+        box-shadow: 0 0 5px var(--btn-color);
+        outline: none;
       }
 
-      .discord-btn {
-        background-color: #5865F2;
+      .account-counter {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #28a745;
+        margin-bottom: 1rem;
+        transition: transform 0.3s ease-in-out;
       }
-
-      .discord-btn:hover {
-        background-color: #4752C4;
+      .account-counter:hover {
+        transform: scale(1.05);
       }
-
-      .telegram-btn {
-        background-color: #0088cc;
+      
+      .skins-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
       }
-
-      .telegram-btn:hover {
-        background-color: #0077b3;
+      .skin-status {
+        padding: 1rem;
+        border: 1px solid #444;
+        border-radius: 8px;
+        text-align: left;
+        max-width: 250px;
+        background-color: #222;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+      .skin-status:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+      }
+      
+      .merch-rules {
+        padding: 1.5rem;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        margin-top: 1.5rem;
+      }
+      .merch-rules h3 {
+        color: #dc3545;
+        font-size: 1.5rem;
+        margin-top: 0;
+      }
+      .merch-rules p {
+        margin: 0;
+        line-height: 1.6;
+      }
+      .contact-info {
+        font-weight: bold;
+        color: #007bff;
       }
 
       footer {
@@ -134,71 +211,6 @@
         background-color: var(--bg-color);
         border-radius: 12px;
         margin: 0 1rem 1rem 1rem;
-      }
-
-      .server-banner {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-        background-color: rgba(0, 0, 0, 0.6);
-        padding: 1rem;
-        border-radius: 12px;
-        margin-bottom: 2rem;
-      }
-
-      .server-icon {
-        height: 64px;
-      }
-
-      .copy-btn {
-        background-color: #2ecc71;
-        color: white;
-        border: none;
-        padding: 0.6rem 1rem;
-        border-radius: 8px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s;
-      }
-
-      .copy-btn:hover {
-        background-color: #27ae60;
-      }
-
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      .slogan {
-        font-size: 1.4rem;
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-        color: var(--text-color);
-      }
-
-      .goal-section {
-        background-color: rgba(0, 0, 0, 0.5);
-        border-radius: 12px;
-        padding: 1rem 2rem;
-        max-width: 600px;
-        margin: 0 auto;
-        color: var(--text-color);
-        text-align: left;
-      }
-
-      .goal-section h2 {
-        margin-bottom: 1rem;
-        font-weight: 700;
-      }
-
-      .goal-section ul {
-        list-style-type: disc;
-        padding-left: 1.5rem;
-        font-size: 1.1rem;
-        line-height: 1.6;
       }
     </style>
   </head>
@@ -225,7 +237,7 @@
       <h1>Conto Corrente</h1>
       <div id="account-counter" class="account-counter">0</div>
       <button id="logout-btn" class="btn hidden">Logout</button>
-      <button id="merch-rules-btn" class="btn">Regolamento Merch</button>
+      <button id="merch-rules-btn" class="btn hidden">Regolamento Merch</button>
       <section id="merch-rules-text" class="merch-rules hidden">
         <h3>REGOLAMENTO DEL MERCH</h3>
         <p>È severamente vietato inviare richieste di realizzazione di skin che abbiano contenuti sensibili, che contengano sponsor, ad altri partiti o società.</p>
@@ -241,14 +253,14 @@
           <label for="password">Password</label>
           <input type="password" id="password" name="password" required>
           <button type="submit" class="btn">Accedi</button>
-          <button type="button" id="register-btn" class="btn">Registrati</button>
+          <button type="button" id="register-btn" class="btn outline">Registrati</button>
         </form>
       </section>
       <section id="skin-form" class="section hidden">
         <h2>Modulo per la tua Skin</h2>
         <form id="skin-submission" class="form-container">
           <label for="skin-name">Nome Utente</label>
-          <input type="text" id="skin-name" name="skin-name" required>
+          <input type="text" id="skin-name" name="skin-name" required readonly>
           <label for="skin-desc">Descrivi la tua Skin</label>
           <textarea id="skin-desc" name="skin-desc" rows="4" placeholder="Descrivi la tua skin" required></textarea>
           <button type="submit" class="btn">Invia</button>
@@ -329,7 +341,6 @@
 
               reqDiv.innerHTML = htmlContent;
 
-              // SE ESISTE IL LINK PER IL DOWNLOAD, MOSTRA IL PULSANTE
               if (req.download_url) {
                 const downloadButton = document.createElement('a');
                 downloadButton.href = req.download_url;
@@ -339,7 +350,6 @@
                 reqDiv.appendChild(downloadButton);
               }
               
-              // Se la skin ha un prezzo ma non è ancora stata acquistata
               if (req.price && req.status !== 'Acquistato') {
                 const buyButton = document.createElement('button');
                 buyButton.textContent = 'Acquista';
@@ -451,7 +461,7 @@
           logoutBtn.classList.remove('hidden');
           merchRulesBtn.classList.remove('hidden');
           skinNameInput.value = currentUsername;
-          updateUI();
+          updateUI(); // Chiama updateUI solo dopo aver fatto l'accesso
       }
 
       document.getElementById('login').addEventListener('submit', function(event) {
