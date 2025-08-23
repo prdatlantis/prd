@@ -16,7 +16,6 @@
         --input-bg: rgba(255, 255, 255, 0.05);
         --input-border: 1px solid rgba(255, 255, 255, 0.3);
       }
-
       body {
         margin: 0;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -27,7 +26,6 @@
         background-attachment: fixed;
         transition: background-color 0.5s, color 0.5s;
       }
-
       .dark-mode {
         --text-color: #e0e0e0;
         --bg-color: rgba(30, 30, 30, 0.8);
@@ -38,7 +36,6 @@
         --input-bg: rgba(255, 255, 255, 0.02);
         --input-border: 1px solid rgba(255, 255, 255, 0.2);
       }
-
       .navbar {
         display: flex;
         justify-content: space-between;
@@ -48,7 +45,6 @@
         border-radius: 12px;
         margin: 1rem;
       }
-
       .logo-title {
         display: flex;
         align-items: center;
@@ -56,25 +52,21 @@
         text-decoration: none;
         color: var(--text-color);
       }
-
       .logo-img {
         height: 70px;
       }
-
       .title-text {
         font-size: 1.3rem;
         font-weight: bold;
         color: var(--text-color);
         white-space: nowrap;
       }
-
       .nav-links {
         display: flex;
         gap: 1rem;
         list-style: none;
         margin: 0;
       }
-
       .nav-links a, .theme-toggle {
         text-decoration: none;
         color: var(--text-color);
@@ -85,11 +77,9 @@
         font-weight: bold;
         cursor: pointer;
       }
-
       .nav-links a:hover, .theme-toggle:hover {
         background-color: rgba(255, 255, 255, 0.2);
       }
-
       .section {
         padding: 2rem;
         text-align: center;
@@ -98,12 +88,9 @@
         border-radius: 12px;
         animation: fadeIn 1s ease-in-out;
       }
-
       .hidden {
         display: none;
       }
-
-      /* Stili Migliorati per pulsanti e campi */
       .btn {
         background-color: var(--btn-color);
         color: white;
@@ -134,6 +121,12 @@
         background-color: var(--btn-color);
         color: white;
       }
+      .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+      }
       .form-container input, .form-container textarea {
         width: 100%;
         max-width: 300px;
@@ -149,18 +142,22 @@
         box-shadow: 0 0 5px var(--btn-color);
         outline: none;
       }
-
+      .account-counter-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
       .account-counter {
         font-size: 2.5rem;
         font-weight: bold;
         color: #28a745;
-        margin-bottom: 1rem;
         transition: transform 0.3s ease-in-out;
       }
       .account-counter:hover {
         transform: scale(1.05);
       }
-      
       .skins-gallery {
         display: flex;
         flex-wrap: wrap;
@@ -181,7 +178,6 @@
         transform: translateY(-5px);
         box-shadow: 0 6px 16px rgba(0,0,0,0.2);
       }
-      
       .merch-rules {
         padding: 1.5rem;
         background-color: rgba(0, 0, 0, 0.5);
@@ -203,7 +199,6 @@
         font-weight: bold;
         color: #007bff;
       }
-
       footer {
         text-align: center;
         padding: 1rem;
@@ -234,17 +229,37 @@
       </ul>
     </nav>
     <section id="merch-content" class="section">
-      <h1>Conto Corrente</h1>
-      <div id="account-counter" class="account-counter">0</div>
-      <button id="logout-btn" class="btn hidden">Logout</button>
-      <button id="merch-rules-btn" class="btn hidden">Regolamento Merch</button>
-      <section id="merch-rules-text" class="merch-rules hidden">
-        <h3>REGOLAMENTO DEL MERCH</h3>
-        <p>È severamente vietato inviare richieste di realizzazione di skin che abbiano contenuti sensibili, che contengano sponsor, ad altri partiti o società.</p>
-        <p>Per ottenere una skin con uno sponsor, contattare:</p>
-        <p class="contact-info">Discord: @alberto_94746<br>o Telegram: @EspoAlberto</p>
-        <p>Se non si riesce a trovare la password del proprio account, contattare uno dei due contatti e vi ridarò la vostra password.</p>
+      <section id="user-dashboard" class="hidden">
+        <div class="account-counter-container">
+          <h1>Conto Corrente</h1>
+          <div id="account-counter" class="account-counter">0</div>
+          <button id="logout-btn" class="btn outline">Logout</button>
+          <button id="merch-rules-btn" class="btn outline">Regolamento Merch</button>
+        </div>
+        <section id="merch-rules-text" class="merch-rules hidden">
+          <h3>REGOLAMENTO DEL MERCH</h3>
+          <p>È severamente vietato inviare richieste di realizzazione di skin che abbiano contenuti sensibili, che contengano sponsor, ad altri partiti o società.</p>
+          <p>Per ottenere una skin con uno sponsor, contattare:</p>
+          <p class="contact-info">Discord: @alberto_94746<br>o Telegram: @EspoAlberto</p>
+          <p>Se non si riesce a trovare la password del proprio account, contattare uno dei due contatti e vi ridarò la vostra password.</p>
+        </section>
+        <section id="skin-form" class="section">
+          <h2>Modulo per la tua Skin</h2>
+          <form id="skin-submission" class="form-container">
+            <label for="skin-name">Nome Utente</label>
+            <input type="text" id="skin-name" name="skin-name" required readonly>
+            <label for="skin-desc">Descrivi la tua Skin</label>
+            <textarea id="skin-desc" name="skin-desc" rows="4" placeholder="Descrivi la tua skin" required></textarea>
+            <button type="submit" class="btn">Invia</button>
+          </form>
+        </section>
+        <section id="purchase-history" class="section">
+          <h2>Skins Acquistate</h2>
+          <div id="skins-gallery" class="skins-gallery">
+          </div>
+        </section>
       </section>
+
       <section id="login-form" class="section">
         <h2>Accedi o Registrati</h2>
         <form id="login" class="form-container">
@@ -256,27 +271,11 @@
           <button type="button" id="register-btn" class="btn outline">Registrati</button>
         </form>
       </section>
-      <section id="skin-form" class="section hidden">
-        <h2>Modulo per la tua Skin</h2>
-        <form id="skin-submission" class="form-container">
-          <label for="skin-name">Nome Utente</label>
-          <input type="text" id="skin-name" name="skin-name" required readonly>
-          <label for="skin-desc">Descrivi la tua Skin</label>
-          <textarea id="skin-desc" name="skin-desc" rows="4" placeholder="Descrivi la tua skin" required></textarea>
-          <button type="submit" class="btn">Invia</button>
-        </form>
-      </section>
-      <section id="purchase-history" class="section hidden">
-        <h2>Skins Acquistate</h2>
-        <div id="skins-gallery" class="skins-gallery">
-        </div>
-      </section>
     </section>
     <footer>
       &copy; 2025 Partito Riformista Democratico - Tutti i diritti riservati
     </footer>
     <script>
-      // INSERISCI QUI LE TUE CHIAVI API DI SUPABASE
       const SUPABASE_URL = "https://wvcqvsmjlrtaoytedvts.supabase.co"; 
       const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2Y3F2c21qbHJ0YW95dGVkdnRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3NjU2NDksImV4cCI6MjA3MTM0MTY0OX0.gz4N_eOpGSex2GYXSF8rvWJ6kzCjnM7jEJ4nYan4_A8";
 
@@ -284,14 +283,14 @@
       const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       const loginFormSection = document.getElementById('login-form');
-      const skinFormSection = document.getElementById('skin-form');
+      const userDashboardSection = document.getElementById('user-dashboard');
       const logoutBtn = document.getElementById('logout-btn');
       const accountCounter = document.getElementById('account-counter');
       const skinDescInput = document.getElementById('skin-desc');
-      const purchaseHistory = document.getElementById('purchase-history');
       const merchRulesBtn = document.getElementById('merch-rules-btn');
       const merchRulesText = document.getElementById('merch-rules-text');
       const skinNameInput = document.getElementById('skin-name');
+      const skinsGallery = document.getElementById('skins-gallery');
 
       let currentUsername = null;
 
@@ -321,8 +320,7 @@
               return;
           }
 
-          const gallery = document.getElementById('skins-gallery');
-          gallery.innerHTML = '';
+          skinsGallery.innerHTML = '';
           requestsData.forEach(req => {
               const reqDiv = document.createElement('div');
               reqDiv.className = 'skin-status';
@@ -357,7 +355,7 @@
                 buyButton.onclick = () => purchaseSkin(req.request_id, req.price);
                 reqDiv.appendChild(buyButton);
               }
-              gallery.appendChild(reqDiv);
+              skinsGallery.appendChild(reqDiv);
           });
       }
 
@@ -419,7 +417,7 @@
                   .from('users')
                   .select('username')
                   .eq('username', username);
-              if (existingUser.length > 0) {
+              if (existingUser && existingUser.length > 0) {
                   alert("Nome utente già esistente.");
                   return;
               }
@@ -456,12 +454,9 @@
           currentUsername = username;
           localStorage.setItem('user_session', username);
           loginFormSection.classList.add('hidden');
-          skinFormSection.classList.remove('hidden');
-          purchaseHistory.classList.remove('hidden');
-          logoutBtn.classList.remove('hidden');
-          merchRulesBtn.classList.remove('hidden');
+          userDashboardSection.classList.remove('hidden');
           skinNameInput.value = currentUsername;
-          updateUI(); // Chiama updateUI solo dopo aver fatto l'accesso
+          updateUI();
       }
 
       document.getElementById('login').addEventListener('submit', function(event) {
@@ -499,10 +494,7 @@
           localStorage.removeItem('user_session');
           currentUsername = null;
           loginFormSection.classList.remove('hidden');
-          skinFormSection.classList.add('hidden');
-          purchaseHistory.classList.add('hidden');
-          logoutBtn.classList.add('hidden');
-          merchRulesBtn.classList.add('hidden');
+          userDashboardSection.classList.add('hidden');
           merchRulesText.classList.add('hidden');
           document.getElementById('username').value = '';
           document.getElementById('password').value = '';
