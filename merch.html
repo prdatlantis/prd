@@ -6,144 +6,199 @@
     <title>PRD - Merch</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-      /* QUESTO È IL CSS CHE VOLEVI TU */
+      /* IL TUO CSS ESATTO */
+      :root {
+        --text-color: #ffffff;
+        --bg-color: rgba(0, 0, 0, 0.7);
+        --btn-color: #4caf50;
+        --btn-hover: #45a049;
+      }
+
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        background-color: #1a1a1a;
-        color: #f4f4f4;
         margin: 0;
-        padding: 0;
-        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text-color);
+        background-image: url('brick.png');
+        background-size: 64px;
+        background-repeat: repeat;
+        background-attachment: fixed;
         transition: background-color 0.5s, color 0.5s;
       }
+
       .dark-mode {
-        background-color: #1a1a1a;
-        color: #f4f4f4;
+        --text-color: #e0e0e0;
+        --bg-color: rgba(30, 30, 30, 0.8);
+        --btn-color: #1e88e5;
+        --btn-hover: #1565c0;
       }
-      .light-mode {
-        background-color: #f4f4f4;
-        color: #333;
-      }
-      .section {
-        padding: 2rem 1rem;
-        margin: 0 auto;
-        max-width: 800px;
-      }
-      .hidden {
-        display: none;
-      }
-      .account-counter {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #28a745;
-        margin-bottom: 1rem;
-        transition: transform 0.3s ease-in-out;
-      }
-      .account-counter:hover {
-        transform: scale(1.05);
-      }
-      .form-container {
+
+      .navbar {
         display: flex;
-        flex-direction: column;
-        gap: 1rem;
+        justify-content: space-between;
         align-items: center;
-        padding: 2rem;
-        background-color: #f9f9f9;
+        background-color: var(--bg-color);
+        padding: 1rem 2rem;
         border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
+        margin: 1rem;
       }
-      .dark-mode .form-container {
-        background-color: #2c2c2c;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+      .logo-title {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        text-decoration: none;
+        color: var(--text-color);
       }
-      .form-container:hover {
-        transform: translateY(-5px);
+
+      .logo-img {
+        height: 70px;
       }
-      .form-container input, .form-container textarea {
-        width: 100%;
-        max-width: 300px;
-        padding: 0.75rem;
-        border: 2px solid #ddd;
+
+      .title-text {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: var(--text-color);
+        white-space: nowrap;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1rem;
+        list-style: none;
+        margin: 0;
+      }
+
+      .nav-links a, .theme-toggle {
+        text-decoration: none;
+        color: var(--text-color);
+        padding: 0.5rem 1rem;
+        background-color: rgba(255, 255, 255, 0.1);
         border-radius: 8px;
-        transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        transition: background-color 0.3s;
+        font-weight: bold;
+        cursor: pointer;
       }
-      .dark-mode .form-container input, .dark-mode .form-container textarea {
-        background-color: #333;
-        color: #f4f4f4;
-        border: 2px solid #555;
+
+      .nav-links a:hover, .theme-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.2);
       }
-      .form-container input:focus, .form-container textarea:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 8px rgba(0, 123, 255, 0.6);
-        outline: none;
+
+      .section {
+        padding: 2rem;
+        text-align: center;
+        background-color: var(--bg-color);
+        margin: 2rem;
+        border-radius: 12px;
+        animation: fadeIn 1s ease-in-out;
       }
+
       .btn {
-        padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 8px;
-        background-color: #007bff;
+        background-color: var(--btn-color);
         color: white;
+        padding: 0.7rem 1.5rem;
+        border: none;
+        border-radius: 10px;
         font-size: 1rem;
         cursor: pointer;
+        transition: transform 0.2s, background-color 0.3s;
+        display: inline-block;
+        margin-top: 1rem;
         text-decoration: none;
-        transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
       }
+
       .btn:hover {
-        background-color: #0056b3;
+        background-color: var(--btn-hover);
         transform: scale(1.05);
       }
-      .btn:active {
-        transform: scale(0.95);
+
+      .discord-btn {
+        background-color: #5865F2;
       }
-      .skins-gallery {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        justify-content: center;
+
+      .discord-btn:hover {
+        background-color: #4752C4;
       }
-      .skin-status {
+
+      .telegram-btn {
+        background-color: #0088cc;
+      }
+
+      .telegram-btn:hover {
+        background-color: #0077b3;
+      }
+
+      footer {
+        text-align: center;
         padding: 1rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        text-align: left;
-        max-width: 250px;
-        background-color: #fff;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-      }
-      .dark-mode .skin-status {
-        background-color: #222;
-        border: 1px solid #444;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-      }
-      .skin-status:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-      }
-      .merch-rules {
-        padding: 1.5rem;
-        background-color: #f4f4f4;
+        margin-top: 2rem;
+        background-color: var(--bg-color);
         border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        text-align: left;
-        margin-top: 1.5rem;
+        margin: 0 1rem 1rem 1rem;
       }
-      .dark-mode .merch-rules {
-        background-color: #333;
+
+      .server-banner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
       }
-      .merch-rules h3 {
-        color: #dc3545;
-        font-size: 1.5rem;
-        margin-top: 0;
+
+      .server-icon {
+        height: 64px;
       }
-      .merch-rules p {
-        margin: 0;
-        line-height: 1.6;
-      }
-      .contact-info {
+
+      .copy-btn {
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
         font-weight: bold;
-        color: #007bff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .copy-btn:hover {
+        background-color: #27ae60;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .slogan {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: var(--text-color);
+      }
+
+      .goal-section {
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 12px;
+        padding: 1rem 2rem;
+        max-width: 600px;
+        margin: 0 auto;
+        color: var(--text-color);
+        text-align: left;
+      }
+
+      .goal-section h2 {
+        margin-bottom: 1rem;
+        font-weight: 700;
+      }
+
+      .goal-section ul {
+        list-style-type: disc;
+        padding-left: 1.5rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
       }
     </style>
   </head>
@@ -170,7 +225,7 @@
       <h1>Conto Corrente</h1>
       <div id="account-counter" class="account-counter">0</div>
       <button id="logout-btn" class="btn hidden">Logout</button>
-      <button id="merch-rules-btn" class="btn hidden">Regolamento Merch</button>
+      <button id="merch-rules-btn" class="btn">Regolamento Merch</button>
       <section id="merch-rules-text" class="merch-rules hidden">
         <h3>REGOLAMENTO DEL MERCH</h3>
         <p>È severamente vietato inviare richieste di realizzazione di skin che abbiano contenuti sensibili, che contengano sponsor, ad altri partiti o società.</p>
@@ -195,7 +250,7 @@
           <label for="skin-name">Nome Utente</label>
           <input type="text" id="skin-name" name="skin-name" required>
           <label for="skin-desc">Descrivi la tua Skin</label>
-          <textarea id="skin-desc" name="skin-desc" rows="4" placeholder="Descrivi la tua skin" required onfocus="this.placeholder=''"></textarea>
+          <textarea id="skin-desc" name="skin-desc" rows="4" placeholder="Descrivi la tua skin" required></textarea>
           <button type="submit" class="btn">Invia</button>
         </form>
       </section>
